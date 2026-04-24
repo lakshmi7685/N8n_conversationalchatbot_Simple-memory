@@ -1,0 +1,158 @@
+{
+  "name": "Conversation-Chatbot-Session",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "09032007-edab-4b6a-874e-487eb613a600",
+      "name": "When chat message received",
+      "webhookId": "7df0bc90-cb08-4b21-8c25-990fcac9f8b9"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a0aefd5d-7002-4f73-ad7c-a756276740d6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        208
+      ],
+      "id": "ecb843ea-645c-47c9-9432-f7bf116f8743",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "0eNnkRxuQamoukiu",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        208
+      ],
+      "id": "16739966-ab41-4138-a437-f22bc9ee4f08",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        0
+      ],
+      "id": "6d92ebe3-8b66-4e70-8fc7-38f5fafd46bd",
+      "name": "Chat",
+      "webhookId": "cdd8feb7-9b02-4479-8a3d-812e39160759"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5837986f-e348-4e68-8a8f-3fecad732365",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "413d879856fbe7bcdcd8b99991c80f487301c0b0e04f9c253979c5d6e12a8e97"
+  },
+  "id": "IWK2uhQJt232d8vI",
+  "tags": [
+    {
+      "name": "n8n_Conversationalbot",
+      "id": "lJ6qMW9kDkyo4TO9",
+      "updatedAt": "2026-04-24T18:19:27.036Z",
+      "createdAt": "2026-04-24T18:19:27.036Z"
+    }
+  ]
+}

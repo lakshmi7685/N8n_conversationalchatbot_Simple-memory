@@ -53,7 +53,7 @@
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
-          "id": "0eNnkRxuQamoukiu",
+          "id": "",
           "name": "OpenAI account"
         }
       }
